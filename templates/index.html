@@ -1,0 +1,37 @@
+<!-- #index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather API Test</title>
+    <script>
+        async function fetchWeather() {
+            const zipCode = document.getElementById('zipCode').value;
+    
+            // Basic ZIP code validation
+            if (!zipCode || zipCode.length !== 5 || isNaN(zipCode)) {
+                alert('Please enter a valid 5-digit ZIP code.');
+                return;
+            }
+    
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/weather?zip=${zipCode}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Failed to fetch weather data. Please try again later.');
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <h1>Weather API Test</h1>
+    <input type="text" id="zipCode" placeholder="Enter ZIP code">
+    <button onclick="fetchWeather()">Get Weather</button>
+    <pre id="result"></pre>
+</body>
+</html>
